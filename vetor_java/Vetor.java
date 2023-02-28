@@ -1,4 +1,4 @@
-import javax.xml.transform.Source;
+
 
 public class Vetor<T> {
 
@@ -7,11 +7,12 @@ public class Vetor<T> {
 
    //construtor específico:
 
-   public Vetor(int length)
+   public Vetor(int tamanho)
    {
-      vetor = (T[]) new Object[length];
+      vetor = (T[]) new Object[tamanho];
 
-      this.tamanho = tamanho;
+      this.tamanho = 0;
+
    }
 
    //retorna o tamanho do vetor
@@ -65,33 +66,83 @@ public class Vetor<T> {
    //recupera o dado na lista com base na posição
    public T recuperar(int posicao)
    {
-         return vetor[posicao];
+      return vetor[posicao];
    }
 
    
-   //verifica se a lista está populada
+   //#region verifica se a lista está populada
    public boolean existeDado(int posicao)
    {
-      return vetor[posicao] != null;
-   }
-
-   public boolean vazio()
-   {
-      if(Length() == 0)
+      try
       {
-         return true;
+         return vetor[posicao] != null;
       }
-      else
+      catch(java.lang.ArrayIndexOutOfBoundsException Exc)
       {
          return false;
       }
+      
+   }
+   //#endregion
+
+   public boolean vazio()
+   {
+      return tamanho == 0;
    }
 
-   //dobra o tamanho da lista caso a lista esteja cheia;
+   //#region metodo que remove um item da lista com base na posicao
+   public void remove(int posicao)
+   {
+     try
+      {
+         System.out.println("Removendo...");
+
+         for (int i = posicao; i < tamanho - 1; i++) {
+            vetor[i] = vetor[i + 1];
+        }
+
+        vetor[tamanho - 1] = null;
+        tamanho --;
+      }
+      catch(java.lang.ArrayIndexOutOfBoundsException Exc)
+      {
+         System.out.println("Índice inválido!");
+      }
+      
+   }
+   //#endregion
+
+   public void removeInicio()
+   {
+      remove(0);
+   }
+
+   public void removeFim()
+   {
+      remove(tamanho);
+   }
+
+
+   public void limpar()
+   {
+      Iterador it = new Iterador<>(vetor);
+      
+      int i = 0;
+      
+      if(it.IsPopulated())
+      {
+         vetor[i] = null;
+      }
+      tamanho = 0;
+
+      
+   }
+
+   //#region dobra o tamanho da lista caso a lista esteja cheia;
    public void redimensionar()
    {
       tamanho = tamanho*2;
       Length();
    }
-
+   //#endregion
 }
