@@ -1,3 +1,5 @@
+import javax.xml.transform.Source;
+
 public class Vetor<T> {
 
    private T[] vetor;
@@ -22,25 +24,27 @@ public class Vetor<T> {
 
    public void Add(T elemento, int posicao)
    {
-      if(tamanho == Length())
+      try
       {
-         redimensionar();
-      }
+         Iterador<T> it = new Iterador<>(vetor);
 
-      Iterador<T> it = new Iterador<>(vetor);
+         int i = 0;
 
-      int i = 0;
+         while(it.IsPopulated()){
 
-      while(it.nextValue() != null){
-         
          if(it.nextValue() == null){
 
             vetor[i] = elemento;
-            tamanho++;
+            tamanho++;  
             break;
          }
 
-         i++;
+            i++;
+         }
+      }
+      catch(java.lang.ArrayIndexOutOfBoundsException Exc)
+      {
+         redimensionar();
       }
       
    }
@@ -58,8 +62,32 @@ public class Vetor<T> {
       Add(elemento, tamanho);
    }
 
+   //recupera o dado na lista com base na posição
+   public T recuperar(int posicao)
+   {
+         return vetor[posicao];
+   }
 
-   //dobra o tamanho da lista caso a lista esteja cheia
+   
+   //verifica se a lista está populada
+   public boolean existeDado(int posicao)
+   {
+      return vetor[posicao] != null;
+   }
+
+   public boolean vazio()
+   {
+      if(Length() == 0)
+      {
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+
+   //dobra o tamanho da lista caso a lista esteja cheia;
    public void redimensionar()
    {
       tamanho = tamanho*2;
